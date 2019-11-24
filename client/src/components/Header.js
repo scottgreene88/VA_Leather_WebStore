@@ -19,6 +19,9 @@ function Header() {
         <li>
           <Link to="/contact">Contact</Link>
         </li>
+        <li>
+          <Link to="/submitproduct">Submit Products</Link>
+        </li>
       </ul>
     </Wrapper>
   );

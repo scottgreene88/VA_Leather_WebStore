@@ -4,6 +4,8 @@ var cors = require('cors');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 
+//Import database schema's
+const productData = require('./database/ProductsSchema');
 
 //server constants
 const PORT = 80;
@@ -34,7 +36,37 @@ let db = mongoose.connection;
 db.once('open', () => console.log('connected to the database'));
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-router.get('/products')
+//router.get('/products')
+
+router.post('/putProduct', (req, res) => {
+  let newProduct = new productData();
+
+  const message = req.body;
+
+  //validate input types
+  if(typeof message.itemName != 'string' ||
+    typeof message.price != 'number' ||
+    typeof message.description != 'string' ||
+    typeof message.imageUrl != 'array'
+  )
+  {
+    return res.json({
+      success: false,
+      error: 'Invalid Input'
+    });
+  }
+
+  newProduct.itemName = message.itemName;
+  newProduct.price = message.price;
+  newProduct.description = message.description;
+  newProduct.imageUrl = message.imageUrl;
+
+  newProduct.save((err) => {
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true });
+  });
+
+});
 
 //handle 404 for bad request
 app.use("*",function(req,res){
