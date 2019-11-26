@@ -20,7 +20,7 @@ function Header() {
           <Link to="/contact">Contact</Link>
         </li>
         <li>
-          <Link to="/submitproduct">Submit Products</Link>
+          <Link to="/admin">Admin</Link>
         </li>
       </ul>
     </Wrapper>

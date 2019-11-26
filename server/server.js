@@ -3,12 +3,14 @@ const express = require('express');
 var cors = require('cors');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+var path = require('path');
 
 //Import database schema's
 const productData = require('./database/ProductsSchema');
+const siteInfo = require('./database/SiteInfoSchema')
 
 //server constants
-const PORT = 80;
+const PORT = 3000;
 var STATIC_ROOT = path.resolve(__dirname, '../client/build');
 
 //Set up express 
@@ -29,20 +31,35 @@ router.use(function(req,res,next) {
 //MongoDB Atlas connection
 const dbRoute = 'mongodb+srv://Scott-Greene:Gooner123!@valeathercocluster-div9o.mongodb.net/test?retryWrites=true&w=majority';
 
-mongoose.connect(dbRoute, { useNewUrlParser: true });
+mongoose.connect(dbRoute, { useNewUrlParser: true, useUnifiedTopology: true });
 
 let db = mongoose.connection;
 
 db.once('open', () => console.log('connected to the database'));
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-//router.get('/products')
+app.get('/getProducts', (req, res) => {
+  
+  productData.find((err, data) => {
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true, data: data });
+  });
+});
 
-router.post('/putProduct', (req, res) => {
-  let newProduct = new productData();
+app.get('/getSiteInfo', (req, res) => {
+  
+  siteInfo.find((err, data) => {
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true, data: data });
+  });
+});
+
+app.post('/submitSiteInfo',(req, res) => {
+  let newSiteInfo = new siteInfo();
 
   const message = req.body;
 
+  /*
   //validate input types
   if(typeof message.itemName != 'string' ||
     typeof message.price != 'number' ||
@@ -55,7 +72,37 @@ router.post('/putProduct', (req, res) => {
       error: 'Invalid Input'
     });
   }
+*/
+  newSiteInfo.about = message.about;
+  newSiteInfo.contactMessage = message.contactMessage;
+  newSiteInfo.contactEmail = message.contactEmail;
 
+  newSiteInfo.save((err) => {
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true });
+  });
+
+});
+
+app.post('/submitProduct', (req, res) => {
+  let newProduct = new productData();
+
+  const message = req.body;
+
+  /*
+  //validate input types
+  if(typeof message.itemName != 'string' ||
+    typeof message.price != 'number' ||
+    typeof message.description != 'string' ||
+    typeof message.imageUrl != 'array'
+  )
+  {
+    return res.json({
+      success: false,
+      error: 'Invalid Input'
+    });
+  }
+*/
   newProduct.itemName = message.itemName;
   newProduct.price = message.price;
   newProduct.description = message.description;
@@ -75,4 +122,4 @@ app.use("*",function(req,res){
 
 app.use("/",router);
 
-app.listen(PORT, function(){console.log('VA Leather Co. server started, listening on PORT '+PORT);
+app.listen(PORT, function(){console.log('VA Leather Co. server started, listening on PORT '+PORT)});

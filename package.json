@@ -1,0 +1,22 @@
+{
+  "name": "VA_Leather_WebStore_V2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scottgreene88/VA_Leather_WebStore.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scottgreene88/VA_Leather_WebStore/issues"
+  },
+  "homepage": "https://github.com/scottgreene88/VA_Leather_WebStore#readme",
+  "dependencies": {
+    "concurrently": "^5.0.0"
+  }
+}

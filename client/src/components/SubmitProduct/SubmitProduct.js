@@ -1,5 +1,5 @@
 import React from 'react'
-
+import axios from 'axios';
 
 class SubmitProduct extends React.Component{
 
@@ -18,18 +18,47 @@ class SubmitProduct extends React.Component{
     handleChange(event){
         const {name, value} = event.target;
 
-        this.setState({[name]: value});
+        if(name === "imageUrl")
+        {
+            var fileInput = document.getElementById("fileInput");
+            var files = fileInput.files;
+            var file;
+
+            // loop through files
+            for (var i = 0; i < files.length; i++) {
+                // get item
+                file = files.item(i);
+
+                this.state.imageUrl.push(file.name);
+                //console.log(file.name);
+            }
+        }
+        else if(name === "price")
+        {
+            this.setState({[name]: Number(value)});
+        }
+        else
+            this.setState({[name]: value});
     }
 
+
     handleSubmit(event){
-        alert(this.state.itemName+ " " + this.state.price+ " " + this.state.description+ " " + typeof this.state.imageUrl);
+        event.preventDefault();
+        axios.post('http://localhost:3000/submitProduct', this.state).then(function (response) {
+            alert("Item submitted successfully!");
+        })
+        .catch(function (error) {
+            alert(error);})
+
+        this.setState({ itemName: '', price:'', description: '', imageUrl: []});
+        
     }
 
     render(){
         return(
             
                 <div>
-                <form onSubmit={this.handleSubmit}>
+                <form >
                     <label>
                         Item Name:
                         <input type='text' name="itemName" value={this.state.itemName} onChange={this.handleChange} placeholder='Item name here'/>
@@ -38,23 +67,24 @@ class SubmitProduct extends React.Component{
                     <br/>
                     <label>
                         Item Price:
-                        <input type='number' name="price" value={this.state.price} onChange={this.handleChange} placeholder='Item price here'/>
+                        <input type='number' min='0' name="price" value={this.state.price} onChange={this.handleChange} placeholder='Item price here'/>
                     </label>
                     <br/>
                     <br/>
                     <label>
                         Item Description:
-                        <input type='textarea' rows="5" name="description" value={this.state.description} onChange={this.handleChange} placeholder='Item description here'/>
+                        <br/>
+                        <textarea   rows='8' cols='50' name="description" value={this.state.description} onChange={this.handleChange} placeholder='Item description here'/>
                     </label>
                     <br/>
                     <br/>
                     <label>
                         Item Images:
-                        <input type="file" name="img" multiple name="imageUrl" value={this.state.imageUrl} onChange={this.handleChange} placeholder='Hold shift to select multiple images'/>
+                        <input type="file" multiple name="imageUrl" id="fileInput"  onChange={this.handleChange} placeholder='Hold shift to select multiple images'/>
                     </label>
                     <br/>
                     <br/>
-                    <input type="submit" value="Submit" />
+                    <button type="button" onClick={this.handleSubmit}>Submit</button>
                 </form>
                 </div>
                     

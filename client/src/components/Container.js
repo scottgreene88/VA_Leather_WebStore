@@ -7,7 +7,7 @@ import Home from "./Home";
 import Products from "./ProductsPage/ProductsPresentation";
 import About from "./About";
 import Contact from "./Contact";
-import SubmitProduct from "./SubmitProduct/SubmitProductPresentation"
+import Admin from "./AdminPage/AdminPage"
 
 function Container({ location }) {
   return (
@@ -24,7 +24,7 @@ function Container({ location }) {
               <Route path="/Products" component={Products} />
               <Route path="/About" component={About} />
               <Route path="/Contact" component={Contact} />
-              <Route path="/SubmitProduct" component={SubmitProduct} />
+              <Route path="/Admin" component={Admin} />
             </Switch>
           </section>
         </CSSTransition>

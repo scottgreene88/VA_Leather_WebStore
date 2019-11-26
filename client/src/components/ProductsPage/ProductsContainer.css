@@ -1,0 +1,14 @@
+
+#productList
+{
+    list-style: none;
+    display: inline-block;
+    overflow: auto;
+}
+
+#productList li
+{
+    display: inline-block;
+    position: relative;
+    align-items: center;
+}
