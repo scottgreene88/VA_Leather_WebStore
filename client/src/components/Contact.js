@@ -1,18 +1,45 @@
 import React from "react";
 import styled from "styled-components";
 
-function Contact() {
+class Contact extends React.Component {
 
-  return (
-    <Wrapper>
-      <span>Contact</span>
-      <section>
-        <p>
-            CONTACT STUFF HERE
-        </p>
-      </section>
-    </Wrapper>
-  );
+  constructor(){
+    super();
+    this.state = {
+      contactText:'',
+      contactEmail: ''
+    }
+  }
+
+  componentDidMount(){
+    fetch('http://localhost:3000/getSiteInfo')
+    .then((data) => data.json())
+    .then((res) =>{ 
+        this.setState({ 
+          contactText: res.data[0].contactMessage, 
+            contactEmail: res.data[0].contactEmail }); 
+        })
+    .catch(function (error) {
+      alert(error);});
+
+}
+
+  render(){
+    return (
+      <Wrapper>
+        <span>Contact</span>
+        <section>
+          <p>
+              {this.state.contactText}
+          </p>
+          <br/>
+          <p>
+              Email: {this.state.contactEmail}
+          </p>
+        </section>
+      </Wrapper>
+    );
+  }
 }
 
 const Wrapper = styled.div`

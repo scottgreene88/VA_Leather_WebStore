@@ -58,29 +58,24 @@ app.post('/submitSiteInfo',(req, res) => {
   let newSiteInfo = new siteInfo();
 
   const message = req.body;
+  //probably want to validate the input payload here
 
-  /*
-  //validate input types
-  if(typeof message.itemName != 'string' ||
-    typeof message.price != 'number' ||
-    typeof message.description != 'string' ||
-    typeof message.imageUrl != 'array'
-  )
-  {
-    return res.json({
-      success: false,
-      error: 'Invalid Input'
-    });
-  }
-*/
+  
   newSiteInfo.about = message.about;
   newSiteInfo.contactMessage = message.contactMessage;
   newSiteInfo.contactEmail = message.contactEmail;
 
-  newSiteInfo.save((err) => {
+  //Here we delete the old site info and create a new one so that there is always just a single 
+  //document
+  siteInfo.deleteMany({})
+  .then(  
+    newSiteInfo.save((err) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true });
-  });
+  }))
+
+
+
 
 });
 

@@ -1,18 +1,41 @@
 import React from "react";
 import styled from "styled-components";
 
-function About() {
 
-  return (
-    <Wrapper>
-      <span>About</span>
-      <section>
-        <p>
-            ABOUT STUFF HERE
-        </p>
-      </section>
-    </Wrapper>
-  );
+class About extends React.Component {
+
+  constructor(){
+    super();
+    this.state = {
+      aboutText:''
+    }
+  }
+
+  componentDidMount()
+  {
+    fetch('http://localhost:3000/getSiteInfo')
+    .then((data) => data.json())
+    .then((res) =>{ 
+        this.setState({ 
+          aboutText: res.data[0].about }); 
+        })
+    .catch(function (error) {
+      alert(error);});
+
+}
+
+  render(){
+    return (
+      <Wrapper>
+        <span>About VA Leather Co.</span>
+        <section>
+          <p>
+              {this.state.aboutText}
+          </p>
+        </section>
+      </Wrapper>
+    );
+  }
 }
 
 const Wrapper = styled.div`

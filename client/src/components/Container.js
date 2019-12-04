@@ -9,7 +9,7 @@ import About from "./About";
 import Contact from "./Contact";
 import Admin from "./AdminPage/AdminPage"
 
-function Container({ location }) {
+function Container ({ location }) {
   return (
     <Wrapper>
       <TransitionGroup className="transition-group">

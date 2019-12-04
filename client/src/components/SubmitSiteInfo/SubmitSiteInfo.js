@@ -24,7 +24,12 @@ class SubmitSiteInfo extends React.Component{
     componentDidMount(){
         fetch('http://localhost:3000/getSiteInfo')
         .then((data) => data.json())
-        .then((res) =>{ this.setState({ about: res.data[0].about, contactMessage: res.data[0].contactMessage, contactEmail: res.data[0].contactEmail })})
+        .then((res) =>{ 
+            this.setState({ 
+                about: res.data[0].about,
+                contactMessage: res.data[0].contactMessage, 
+                contactEmail: res.data[0].contactEmail }); 
+            })
         .catch(function (error) {
           alert(error);});
 
@@ -32,12 +37,13 @@ class SubmitSiteInfo extends React.Component{
 
     handleSubmit(event){
         event.preventDefault();
+
+
         axios.post('http://localhost:3000/submitSiteInfo', this.state).then(function (response) {
             alert("Info submitted successfully!");
         })
         .catch(function (error) {
-            alert(error);})
-       
+            alert(error);})     
     }
 
     render(){

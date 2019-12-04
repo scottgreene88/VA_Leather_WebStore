@@ -46,7 +46,7 @@ class ProductsContainer extends React.Component{
                         ? 'No Products'
                         : products.map((dat) => (
                             <li display= 'inline-block' style={{ padding: '10px' }} key={products._id}>
-                                <Product itemName={dat.itemName} price={dat.price} description={dat.description} imageUrl={bucketUrl + dat.imageUrl[0]} />
+                                <Product itemName={dat.itemName} price={dat.price} description={dat.description} bucketUrl={bucketUrl} imageUrl={dat.imageUrl} />
                             </li>
                         ))}
                 </ul>            
